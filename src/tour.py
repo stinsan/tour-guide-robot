@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 from shapely.geometry.polygon import Polygon
 
+#  A tour hightlight to be visited by the robot
 class TourHighlight:
     def __init__(self, id, coord, blurb):
         """
@@ -13,17 +14,22 @@ class TourHighlight:
         self.coord = coord
         self.blurb = blurb
 
+        
+#  An edge connecting the nodes
 class Edge:
     def __init__(self, start, destination, gates=None):
         self.start = start
         self.destination = destination
         self.gates = gates
 
+        
+#  A gate node representing the entrance/exit of doors
 class Gate:
     def __init__(self, id, coord):
         self.id = id
         self.coord = coord
- 
+
+#  Tour Map consting of nodes (highlights and gates) and connecting edges
 class TourMap:
     def __init__(self):
         # 1. DEH east entrance: (3.6, -8.3)
@@ -60,7 +66,7 @@ class TourMap:
         ZONE3 = Polygon([(-1.7, -7.8), (0.6, -5.9), (-2.8, -1.2), (-5.2, -2.8)]) # Hallway
         ZONE4 = Polygon([(-1.7, -7.8), (-5.1, -2.9), (-12.3, -8.4), (-8.8, -13.2)]) # DEH 115.
         self.zones = [ZONE1, ZONE2, ZONE3, ZONE4]
-
+    
     def get_edge(self, start, destination):
         edge_list = self.edges[start]
 
@@ -77,6 +83,7 @@ class TourMap:
             if e.destination == destination:
                 self.edges[start].remove(e)
 
+    #  Pruning edges and nodes when a door is not opened
     def prune(self, gate_id):
         """ Removes the edges that are blocked by the given gate_id,
         also removes blocked tour highlights.

@@ -2,12 +2,15 @@
 import math
 from shapely.geometry import Point
 
+#  Determine eclidean distance between nodes
 def euclidean_distance(p1, p2):
     return math.sqrt((p1[0] - p2[0])**2 + (p1[1] - p2[1])**2)
 
+#  Convert the gazebo coordinates to the RViz coordinates 
 def gazebo_to_rviz_coords(coord):
     return (coord[0] - 1.54, coord[1] - 7.80)
 
+#  Find the starting location of the tour
 def find_start(curr_coord, highlights, zones):
     # Find the current zone.
     curr_point = Point(curr_coord[0], curr_coord[1])
@@ -29,11 +32,12 @@ def find_start(curr_coord, highlights, zones):
     
     return closest_highlight
 
+#  Find the closest highlight to move to next
 def find_closest_highlight(tour_map, curr_node):
     closest_highlight = None
     min_distance = float('inf')
 
-    # Find current zone.
+    # Find current zone, go to all point in zone before moving on to next
     curr_zone =  None
     for z in tour_map.zones:
         if z.contains(Point(curr_node.coord[0], curr_node.coord[1])):

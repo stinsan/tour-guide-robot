@@ -9,6 +9,7 @@ from geometry_msgs.msg import Pose, Point, Quaternion
 from tour import TourMap
 
 
+#  Moving the robot
 def movebase_client(curr_coord, next_coord):
     client = actionlib.SimpleActionClient('move_base',MoveBaseAction)
     client.wait_for_server()
@@ -29,6 +30,8 @@ def movebase_client(curr_coord, next_coord):
     else:
         return client.get_result()
     
+    
+#  Moving to the first tour point
 def go_to_start(tour_map, curr_coord):
     start = helpers.find_start(curr_coord, tm.highlights, tm.zones)
     rospy.loginfo('Starting tour at node {}.'.format(start.id))
@@ -45,6 +48,8 @@ def go_to_start(tour_map, curr_coord):
     
     return start
 
+
+#  Continuing the tour onto the remaining points
 def continue_tour(tour_map, curr_highlight):
     next_highlight = helpers.find_closest_highlight(tour_map, curr_highlight)
     rospy.loginfo('Attempting to go from node {} to node {}.'.format(curr_highlight.id, next_highlight.id))
